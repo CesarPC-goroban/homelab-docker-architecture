@@ -51,7 +51,7 @@ Para evitar la exposición de contraseñas, tokens o claves API en el repositori
 ## 📂 Estructura del Repositorio
 
 ```text
-homelab-docker/
+homelab-docker-architecture/
 ├── credentials/          # Plantillas de ejemplo (.env.example y secretos _FILE)
 ├── ollama/               # Servicio de modelos LLM locales
 ├── open-webui/           # Interfaz web para IA local
