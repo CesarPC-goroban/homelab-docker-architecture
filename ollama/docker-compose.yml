@@ -5,14 +5,14 @@ services:
     restart: unless-stopped
 
     ports:
-      - "8120:11434"
+      - "11434:11434"
 
     environment:
       OLLAMA_HOST: "0.0.0.0:11434"
       OLLAMA_MAX_LOADED_MODELS: "1"
 
     volumes:
-      - /mnt/kenabeek/ollama/modelos:/root/.ollama
+      - /mnt/DiscoComplementario/ollama/modelos:/root/.ollama
 
     deploy:
       resources:

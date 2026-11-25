@@ -6,7 +6,7 @@ services:
       args:
         UPTIME_KUMA_BASE_URL: /kuma/
 
-    image: mi-uptime-kuma:latest
+    image: mi-uptime-kuma:latest # mi imagen personalizada
     container_name: mi-uptime-kuma
     restart: unless-stopped
 
@@ -18,4 +18,4 @@ services:
       - ./data:/app/data
 
     ports:
-      - "8442:3001"
+      - "3001:3001"

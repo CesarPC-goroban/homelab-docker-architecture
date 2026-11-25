@@ -3,11 +3,10 @@ services:
     image: ghcr.io/gamosoft/notediscovery:latest
     container_name: notediscovery
     ports:
-      - "8447:8000"
+      - "8000:8000"
     volumes:
       # Required: Your notes
-      - "/home/goroban/programas/library/obsidian/Obsidian Server:/app/data"
-      #- "/home/goroban/programas/notediscovery/data/notediscovery-app.js:/app/frontend/app.js:ro"
+      - "/home/user/programas/library/CarpetaDeDocumentos:/app/data"
       # Optional: Uncomment to customize (file/folder must exist with content!)
       # - ./config.yaml:/app/config.yaml
       # - ./themes:/app/themes
@@ -26,11 +25,11 @@ services:
       retries: 3
       start_period: 5s
 
-  mcpo-notediscovery:
+  mcpo-notediscovery: # union con Open-WebUI
     image: ghcr.io/open-webui/mcpo:main
     container_name: mcpo-notediscovery
     ports:
-      - "7447:8001"
+      - "8001:8001"
     restart: unless-stopped
     command: --port 8001 --server-type streamable-http -- http://notediscovery:8000/mcp
     depends_on:

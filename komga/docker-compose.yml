@@ -5,42 +5,38 @@ services:
     restart: unless-stopped
     ports:
       - 25600:25600
-    #environment:
-    #  - TZ=Europe/Madrid
-    #  - KOMGA_CORS_ALLOWED_ORIGINS=http://192.168.0.25:25601,http://192.168.0.25:25600,http://192.168.0.25:8085,https://kraken.tail93dfe2.ts.net:26501,https://kraken.tail93dfe2.ts.net:26500,https://kraken.tail93dfe2.ts.net:26502
     environment:
       - TZ=Europe/Madrid
       - SERVER_SERVLET_CONTEXT_PATH=/komga
-     #- KOMGA_CORS_ALLOWED_ORIGINS=http://komga:25600,http://192.168.0.25:25601,http://192.168.0.25:25600,http://192.168.0.25:8085,https://kraken.tail93dfe2.ts.net:26501,https://kraken.tail93dfe2.ts.net:26500,https://kraken.tail93dfe2.ts.net:26502
-      - "KOMGA_CORS_ALLOWED_ORIGINS=http://komga:25600,http://192.168.0.25:25601,http://192.168.0.25:25600,http://192.168.0.25:8085,https://kraken.tail93dfe2.ts.net:26501,https://kraken.tail93dfe2.ts.net:26500,https://kraken.tail93dfe2.ts.net:26502,https://kraken.tail93dfe2.ts.net"
+      - "KOMGA_CORS_ALLOWED_ORIGINS=http://komga:25600, http://192.168.0.???:25600, http://192.168.0.???:80, http://192.168.0.???:8085, https://servidor.tailnet.ts.net:PuertoExternoKomga, https://servidor.tailnet.ts.net:PuertoExternoMangaBox, https://servidor.tailnet.ts.net:PuertoExternoKomf, https://servidor.tailnet.ts.net"
     volumes:
-      - /home/goroban/programas/komga:/config # <-- ¡CORREGIDO! Ahora tus datos reales están a salvo aquí
-      - /home/goroban/programas/library:/data # RUTA ABSOLUTA CORREGIDA
+      - /home/user/programas/komga:/config
+      - /home/user/programas/library:/data
   mangabox-server:
     image: nginx:alpine
     container_name: mangabox-web
     restart: unless-stopped
     ports:
-      - 25601:80
+      - 80:80
     volumes:
-      - /home/goroban/programas/mangabox:/usr/share/nginx/html:ro
+      - /home/user/programas/mangabox:/usr/share/nginx/html:ro
   komf:
     image: sndxr/komf:latest
     container_name: komf
     restart: unless-stopped
     env_file:
-      - /home/goroban/programas/credentials/komf/komf.env
+      - /home/user/programas/credentials/komf/komf.env
     ports:
-      - 25602:8085
+      - 8085:8085
     user: 1000:1000
     environment:
       # AL ESTAR EN EL MISMO STACK, SE COMUNICAN POR EL NOMBRE DEL CONTENEDOR
       - KOMF_KOMGA_BASE_URI=http://komga:25600/komga
       # !!! CAMBIA ESTO por tu usuario administrador real de Komga
-      - KOMF_KOMGA_USER=goroban@gmail.com
+      - KOMF_KOMGA_USER=REEMPLAZAR_CON_EMAIL
       - KOMF_LOG_LEVEL=INFO
       - JAVA_TOOL_OPTIONS=-XX:+UnlockExperimentalVMOptions -XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact -XX:ShenandoahGuaranteedGCInterval=3600000 -XX:TrimNativeHeapInterval=3600000
     volumes:
       # Ruta de tu servidor donde Komf guardará su configuración y base de datos interna
-      - /home/goroban/programas/komf-config:/config
+      - /home/user/programas/komf-config:/config
 networks: {}

@@ -1,4 +1,3 @@
-#Seagate Barracuda de 3 TB.
 services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
@@ -7,12 +6,12 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Madrid
-      - WEBUI_PORT=9448
+      - WEBUI_PORT=WEBUI_PORT
     volumes:
       - ./config:/config
-      - /mnt/kenabeek/descargas:/downloads
+      - /mnt/DiscoComplementario/descargas:/downloads
     ports:
-      - 8448:9448
+      - PuertoLocal:WEBUI_PORT
       - 6881:6881
       - 6881:6881/udp
     restart: unless-stopped

@@ -4,15 +4,14 @@ services:
     container_name: nginx-proxy-manager
     restart: unless-stopped
     ports:
-      - "8081:80"   # Mapea el tráfico HTTP al puerto 8081 que pide tu Tailscale
-      - "8082:443"  # Mapea el tráfico para la ip local que necesita acabar con /vault/, imprescindible esa / final
-      - "8443:81"   # Mapea el Panel de NPM al puerto 8082 que pide tu Tailscale :9443
-      #- "8448:443"
+      - "80:80"   # Mapea el tráfico HTTP al puerto 80 que pide tu Tailscale
+      - "443:443" # Mapea el tráfico para la ip local que necesita acabar con /vault/, imprescindible esa / final (solo valido en mi imagen personalizada)
+      - "81:81"   # Mapea el Panel de NPM al puerto 81 que pide tu Tailscale :IP EXTERNA para poder acceder a vaultwarden.
     environment:
       - IP_RANGES_FETCH_ENABLED=false
     volumes:
-      - /home/goroban/programas/npm/data:/data
-      - /home/goroban/programas/npm/letsencrypt:/etc/letsencrypt
+      - /home/user/programas/npm/data:/data
+      - /home/user/programas/npm/letsencrypt:/etc/letsencrypt
     networks:
       - npm-vaultwarden
 networks:

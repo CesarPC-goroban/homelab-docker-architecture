@@ -4,14 +4,16 @@ services:
     container_name: opencode
     restart: unless-stopped
     ports:
-      - "8122:8122"
+      - "puerto:puerto"
     env_file:
-      - /home/goroban/programas/credentials/opencode/opencode.env
+      - /home/user/programas/credentials/opencode/opencode.env
     environment:
       # USER opencode
       - OPENCODE_SERVER_USERNAME=opencode
     volumes:
       - ./opencode-config:/root/.config/opencode
-      - /home/goroban/programas/workspace:/workspace
-    working_dir: /workspace
-    command: ["serve", "--hostname", "0.0.0.0", "--port", "8122"]
+      - /home/user/programas/CarpetaDeProyectos:/CarpetaDeProyectos
+    working_dir: /CarpetaDeProyectos
+    command: ["serve", "--hostname", "0.0.0.0", "--port", "puerto"]
+    # Todos los valores puerto son el mismo puerto elegido.
+    # CarpetaDeProyectos debe ser igual en sus tres configuraciones, la carpeta elegida para tus proyectos

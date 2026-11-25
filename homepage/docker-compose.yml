@@ -16,4 +16,4 @@ services:
       - /sys:/host/sys:ro
     restart: unless-stopped
     env_file:
-      - /home/goroban/programas/credentials/homepage/homepage.env
+      - /home/user/programas/credentials/homepage/homepage.env

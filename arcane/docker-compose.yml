@@ -1,24 +1,23 @@
 services:
   arcane:
-    image: arcane:subpath
+    image: arcane:subpath # es mi imagen personalizada
     container_name: arcane
     restart: unless-stopped
     ports:
-      - "8441:3552"
+      - "3552:3552"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/goroban/programas/arcane/data:/app/data
-      - /home/goroban/programas:/app/data/projects
-      - /app/data/projects/smanager  # <-- Añade esta línea (volumen anónimo vacío)
+      - /home/user/programas/arcane/data:/app/data
+      - /home/user/programas:/app/data/projects
+      - /app/data/projects/CarpetaConYml-YamlAExcluir  # <-- Añade esta línea (volumen anónimo vacío)
     env_file:
-      - /home/goroban/programas/credentials/arcane/arcane.env
+      - /home/user/programas/credentials/arcane/arcane.env
     environment:
       - ARCANE_TRUSTED_PROXIES=172.20.0.0/32,192.168.0.0/16
-      - ARCANE_APP_URL=https://kraken.tail93dfe2.ts.net/arcane/
-#      - APP_URL=http://192.168.0.25:3552
+      - ARCANE_APP_URL=https://servidor.tailnet.ts.net/arcane/
+#      - APP_URL=http://192.168.0.???:3552
       - ARCANE_PROJECTS_DIRECTORY=/app/data/projects
-      - ARCANE_PROJECT_SCAN_SKIP_DIRS=smanager
+      - ARCANE_PROJECT_SCAN_SKIP_DIRS=DirctorioAExcluir
       - PUID=1000
       - PGID=1000
-#      - ARCANE_ENCRYPTION_KEY=dfd45bb39ad0bf878ea2098e31556bd50038f174cde3c352fe597a7674c8d4d9
-#      - JWT_SECRET=7cb9d94e361c435b8a6be231db3537c9c8cdf8794c889621154d6fcc00142045
+

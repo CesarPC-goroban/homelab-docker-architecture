@@ -4,14 +4,14 @@ services:
     container_name: paperless-redis
     restart: unless-stopped
     volumes:
-      - /home/goroban/programas/paperless-ngx/redis:/data
+      - /home/user/programas/paperless-ngx/redis:/data
 
   db:
     image: docker.io/library/postgres:16
     container_name: paperless-postgres
     restart: unless-stopped
     volumes:
-      - /home/goroban/programas/paperless-ngx/pgdata:/var/lib/postgresql/data
+      - /home/user/programas/paperless-ngx/pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: paperless
       POSTGRES_USER: paperless
@@ -27,12 +27,12 @@ services:
       - db
       - broker
     ports:
-      - "8445:8000"
+      - "8000:8000"
     volumes:
-      - /home/goroban/programas/paperless-ngx/data:/usr/src/paperless/data
-      - /home/goroban/programas/paperless-ngx/media:/usr/src/paperless/media
-      - /home/goroban/programas/paperless-ngx/export:/usr/src/paperless/export
-      - /home/goroban/programas/paperless-ngx/consume:/usr/src/paperless/consume
+      - /home/user/programas/paperless-ngx/data:/usr/src/paperless/data
+      - /home/user/programas/paperless-ngx/media:/usr/src/paperless/media
+      - /home/user/programas/paperless-ngx/export:/usr/src/paperless/export
+      - /home/user/programas/paperless-ngx/consume:/usr/src/paperless/consume
     environment:
       PAPERLESS_REDIS: redis://broker:6379
       PAPERLESS_DBHOST: db
@@ -42,19 +42,18 @@ services:
       PAPERLESS_OCR_LANGUAGE: spa
       PAPERLESS_TIME_ZONE: Europe/Madrid
       #PAPERLESS_FORCE_SCRIPT_NAME: /paperless
-      PAPERLESS_URL: https://kraken.tail93dfe2.ts.net
+      PAPERLESS_URL: https://servidor.tailnet.ts.net
       PAPERLESS_FORCE_SCRIPT_NAME: /paperless
       USERMAP_UID: 1000
       USERMAP_GID: 1000
       # Clave secreta generada y segura inyectada correctamente:
       PAPERLESS_SECRET_KEY_FILE: /run/secrets/paperless_secret_key
-      #fiera_kraken_secret_key_token_2026_super_secure_string_64_bits
     secrets:
       - paperless_db_pass
       - paperless_secret_key
 
 secrets:
   paperless_db_pass:
-    file: /home/goroban/programas/credentials/paperless/db_pass.txt
+    file: /home/user/programas/credentials/paperless/db_pass.txt
   paperless_secret_key:
-    file: /home/goroban/programas/credentials/paperless/secret_key.txt
+    file: /home/user/programas/credentials/paperless/secret_key.txt

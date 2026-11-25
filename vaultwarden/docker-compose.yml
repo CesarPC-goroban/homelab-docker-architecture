@@ -1,16 +1,16 @@
 services:
   vaultwarden:
-    image: vaultwarden/server:latest
+    image: vaultwarden/server:latest # mi imagen personalizada
     container_name: vaultwarden
     restart: unless-stopped
     environment:
       - WEBSOCKET_ENABLED=true # Permite la sincronización instantánea con el móvil
       - TZ=Europe/Madrid
-      - DOMAIN=https://kraken.tail93dfe2.ts.net/vault/
+      - DOMAIN=https://servidor.tailnet.ts.net/vault/
     volumes:
-      - /home/goroban/programas/vaultwarden/data:/data
+      - /home/user/programas/vaultwarden/data:/data
     ports:
-      - 8444:80 # Lo abriremos en el puerto 8444 de tu servidor Kraken
+      - 80:80 # Lo abriremos en el puerto 80 de mi servidor
     networks:
       - npm-vaultwarden
 networks:
