@@ -1,0 +1,24 @@
+# Variables de entorno y secretos (CRÍTICO)
+# Recordar dar permisos 600 a los archivos de credenciales y a las carpetas 700
+*.env*
+!*.env.example
+*.txt*
+!*.txt.example
+secrets/
+# credentials/
+*.key
+*.pem
+*.crt
+
+# Volumenes y datos persistentes
+data/
+volumes/
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs y archivos del sistema
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

@@ -1,0 +1,21 @@
+services:
+  uptime-kuma:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        UPTIME_KUMA_BASE_URL: /kuma/
+
+    image: mi-uptime-kuma:latest
+    container_name: mi-uptime-kuma
+    restart: unless-stopped
+
+    environment:
+      - UPTIME_KUMA_BASE_URL=/kuma/
+      - UPTIME_KUMA_WS_ORIGIN_CHECK=bypass
+
+    volumes:
+      - ./data:/app/data
+
+    ports:
+      - "8442:3001"

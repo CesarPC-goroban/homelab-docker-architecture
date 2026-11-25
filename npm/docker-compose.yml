@@ -1,0 +1,20 @@
+services:
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - "8081:80"   # Mapea el tráfico HTTP al puerto 8081 que pide tu Tailscale
+      - "8082:443"  # Mapea el tráfico para la ip local que necesita acabar con /vault/, imprescindible esa / final
+      - "8443:81"   # Mapea el Panel de NPM al puerto 8082 que pide tu Tailscale :9443
+      #- "8448:443"
+    environment:
+      - IP_RANGES_FETCH_ENABLED=false
+    volumes:
+      - /home/goroban/programas/npm/data:/data
+      - /home/goroban/programas/npm/letsencrypt:/etc/letsencrypt
+    networks:
+      - npm-vaultwarden
+networks:
+  npm-vaultwarden:
+    external: true

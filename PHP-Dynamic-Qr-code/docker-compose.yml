@@ -1,0 +1,59 @@
+services:
+  php-dynamic-qrcode:
+    image: "giandonatoinverso/php-dynamic-qr-code:latest"
+    container_name: php-dynamic-qrcode
+    restart: "unless-stopped"
+    env_file:
+      - /home/goroban/programas/credentials/qrcode/qrcode.env
+    environment:
+      TYPE: "docker"
+      QRCODE_GENERATOR: "internal-chillerlan.qrcode"
+      BASE_URL: "https://kraken.tail93dfe2.ts.net:9449"
+      DATABASE_HOST: "php-dynamic-qrcode-db"
+      DATABASE_PORT: "3306"
+      DATABASE_NAME: "qrcode"
+      DATABASE_USER: "qrcode"
+      DATABASE_PREFIX: ""
+      DATABASE_CHARSET: "utf8"
+    ports:
+      - 8449:80
+    depends_on:
+      - php-dynamic-qrcode-db
+    volumes:
+      - php_dynamic_qrcode_saved_qrcode_data:/var/www/html/saved_qrcode
+    networks:
+      - php-dynamic-qrcode-network
+
+  php-dynamic-qrcode-db:
+    image: "giandonatoinverso/php-dynamic-qr-code-db:latest"
+    container_name: php-dynamic-qrcode-db
+    restart: "unless-stopped"
+    volumes:
+      - php_dynamic_qrcode_db_data:/var/lib/mysql
+    #ports:
+      #- '13306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/qrcode_db_root # "Pulpo85Server@JOB#QRRoot"
+      MYSQL_DATABASE: "qrcode"
+      MYSQL_USER: "qrcode"
+      MYSQL_PASSWORD_FILE: /run/secrets/qrcode_db_user # "Pulpo85Server@JOB#QRUser"
+    secrets:
+      - qrcode_db_root
+      - qrcode_db_user
+    networks:
+      - php-dynamic-qrcode-network
+
+volumes:
+  php_dynamic_qrcode_db_data:
+  php_dynamic_qrcode_config_data:
+  php_dynamic_qrcode_saved_qrcode_data:
+
+secrets:
+  qrcode_db_root:
+    file: /home/goroban/programas/credentials/qrcode/db_root.txt
+  qrcode_db_user:
+    file: /home/goroban/programas/credentials/qrcode/db_user.txt
+
+networks:
+  php-dynamic-qrcode-network:
+    driver: bridge

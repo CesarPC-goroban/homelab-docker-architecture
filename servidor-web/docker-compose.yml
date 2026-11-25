@@ -1,0 +1,75 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: servidor-web-nginx
+    ports:
+      - "8501-8510:8501-8510"   # Puerto para Proyecto 1-9
+    volumes:
+      - ./html:/var/www/html
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - php
+    networks:
+      - red-interna
+    restart: unless-stopped
+
+  php:
+    image: php:8.3-fpm-alpine
+    container_name: servidor-web-php
+    # Si tus webs usan MySQL/MariaDB, instala la extensión mysqli y pdo_mysql al arrancar:
+    command: sh -c "docker-php-ext-install mysqli pdo pdo_mysql && php-fpm"
+    volumes:
+      - ./html:/var/www/html
+    secrets:
+      - web_db_user
+    depends_on:
+      - db
+    networks:
+      - red-interna
+    restart: unless-stopped
+
+  db:
+    image: mariadb:11
+    container_name: servidor-web-db
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/web_db_root
+      MARIADB_DATABASE: proyecto1_db
+      MARIADB_USER: usuario_web
+      MARIADB_PASSWORD_FILE: /run/secrets/web_db_user
+    secrets:
+      - web_db_root
+      - web_db_user
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+      - red-interna
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: servidor-web-phpmyadmin
+    ports:
+      - "8500:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 64M
+    depends_on:
+      - db
+    networks:
+      - red-interna
+    restart: unless-stopped
+
+
+networks:
+  red-interna:
+    driver: bridge
+
+volumes:
+  db_data:
+
+secrets:
+  web_db_root:
+    file: /home/goroban/programas/credentials/servidor-web/web_db_root.txt
+  web_db_user:
+    file: /home/goroban/programas/credentials/servidor-web/web_db_user.txt

@@ -1,0 +1,39 @@
+services:
+  notediscovery:
+    image: ghcr.io/gamosoft/notediscovery:latest
+    container_name: notediscovery
+    ports:
+      - "8447:8000"
+    volumes:
+      # Required: Your notes
+      - "/home/goroban/programas/library/obsidian/Obsidian Server:/app/data"
+      #- "/home/goroban/programas/notediscovery/data/notediscovery-app.js:/app/frontend/app.js:ro"
+      # Optional: Uncomment to customize (file/folder must exist with content!)
+      # - ./config.yaml:/app/config.yaml
+      # - ./themes:/app/themes
+      # - ./plugins:/app/plugins
+      # - ./locales:/app/locales
+    restart: unless-stopped
+    environment:
+      - TZ=UTC
+      - MCP_ENABLED=true
+    networks:
+      - default
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 60s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  mcpo-notediscovery:
+    image: ghcr.io/open-webui/mcpo:main
+    container_name: mcpo-notediscovery
+    ports:
+      - "7447:8001"
+    restart: unless-stopped
+    command: --port 8001 --server-type streamable-http -- http://notediscovery:8000/mcp
+    depends_on:
+      - notediscovery
+    networks:
+      - default

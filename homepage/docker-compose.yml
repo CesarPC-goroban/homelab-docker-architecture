@@ -1,0 +1,19 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:feature-arcane-v3
+    container_name: homepage
+    ports:
+      - 3000:3000
+    pid: host
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=*
+      - HOMEPAGE_SYSINFO_PROC_PATH=/host/proc
+      - HOMEPAGE_SYSINFO_SYS_PATH=/host/sys
+    volumes:
+      - ./config:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    restart: unless-stopped
+    env_file:
+      - /home/goroban/programas/credentials/homepage/homepage.env
